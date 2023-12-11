@@ -2,43 +2,35 @@
 
 // TODO refactoriser le code pour respecter le principe OCP de la programmation SOLID
 
-class Vehicle 
+abstract class Vehicle 
 {
     public function run(){}
+
+    public function fuel (){}
 }
 
 class Motorcycle extends Vehicle
 {
-    
+    public function turnOn()
+    {
+        echo 'Turning on the motorcycle';
+    }
 }
 
 class Car extends Vehicle
 {
-    
+    public function turnOn()
+    {
+        echo 'Turning on the car';
+    }
 }
 
 class Driver 
 {
     public function drive(Vehicle $vehicle)
     {
-        if ($vehicle instanceof Motorcycle) {
-            $this->turnOnMotorcycle();
-        }       
-        
-        if ($vehicle instanceof Car) {
-            $this->turnOnCar();
-        }
+        $vehicle->turnOn();
         
         $vehicle->run();
-    }
-    
-    private function turnOnCar()
-    {
-        echo 'Turning on the car';
-    }
-    
-    private function turnOnMotorcycle()
-    {
-        echo 'Turning on the motorcycle';
     }
 }
