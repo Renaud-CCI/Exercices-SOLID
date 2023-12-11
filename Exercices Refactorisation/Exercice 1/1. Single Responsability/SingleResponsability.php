@@ -6,57 +6,94 @@
 class NoBalanceAvailableException extends \Exception {}
 
 class Product {
-    public function getValue() {}
+    private $value;
+    public function getValue() {
+        return $this->value;
+    }
+    public function setValue($value) {
+        $this->value = $value;
+        return $this;
+    }
 }
 
 class Account 
 {
-    public function getBalance() {}
-    public function setBalance() {}
+    private $balance;
+
+    public function __construct($balance) {
+        $this->balance = $balance;
+    }
+
+    public function getBalance() {
+        return $this->balance;
+    }
+    public function setBalance($balance) {
+        $this->balance = $balance;
+        return $this;
+    }
+    public function debit($value) {
+        $this->balance -= $value;
+    }
 }
 
 class Customer 
 {
-    public function getAccount() {}
+    private $account;
+
+    public function __construct(Account $account) {
+        $this->account = $account;
+    }
+    public function getAccount() {
+        return $this->account;
+    }
+
+    public function setAccount(Account $account) {
+        $this->account = $account;
+        return $this;
+    } 
+
+    public function haveBalanceAvailable($value) {
+        return $this->account->getBalance() >= $value;
+    }
+
+}
+
+class Cart {
+    private $products;
+
+    public function __construct(array $products) {
+        $this->products = $products;
+    }
+
+    public function calculateTotalValue() {
+        $value = 0;
+        foreach ($this->products as $product) {
+            $value += $product->getValue();
+        }
+        return $value;
+    }
 }
 
 class Sale
 {
-    public function getValue() {}
-    public function setValue() {}
-    
-    public function sell(array $products, Customer $customer)
-    {
-        $value = $this->calculateTotalValue($products);
+    private $cart;
+    private $customer;
+
+    public function __construct(Cart $cart, Customer $customer) {
+        $this->cart = $cart;
+        $this->customer = $customer;
+    }
+
+    public function sell() {
+        $value = $this->cart->calculateTotalValue();
         
-        if (!$this->haveBalanceAvailable($customer, $value)) {
+        if (!$this->customer->haveBalanceAvailable($value)) {
             throw new NoBalanceAvailableException();
         }
 
-        /*..... something.....*/
-        
-        $this->setValue($value);
-        $this->calculateBalance($customer);
+        // ... something ...
+
+        $this->customer->getAccount()->debit($value);
     }
     
-    public function calculateBalance(Customer $customer)
-    {
-        $customer->getAccount()->setBalance($customer->getAccount()->getBalance() - $this->getValue());
-    }
-    
-    public function haveBalanceAvailable(Customer $customer, $value)
-    {
-        return $customer->getAccount()->getBalance() >= $value;
-    }
-    
-    private function calculateTotalValue(array $products)
-    {
-        $value = 0;
-    
-        foreach ($products as $product) {
-            $value += $product->getValue();
-        }
-    
-        return $value;
-    }
 }
