@@ -62,16 +62,16 @@ class Cart {
     private $products;
 
     public function __construct(array $products) {
-        $this->products = $products;
+        $this->products = $products;        
     }
 
-    public function calculateTotalValue() {
+    public function getValue() {
         $value = 0;
         foreach ($this->products as $product) {
             $value += $product->getValue();
         }
         return $value;
-    }
+    } 
 }
 
 class Sale
@@ -85,13 +85,11 @@ class Sale
     }
 
     public function sell() {
-        $value = $this->cart->calculateTotalValue();
+        $value = $this->cart->getValue();
         
         if (!$this->customer->haveBalanceAvailable($value)) {
             throw new NoBalanceAvailableException();
         }
-
-        // ... something ...
 
         $this->customer->getAccount()->debit($value);
     }
