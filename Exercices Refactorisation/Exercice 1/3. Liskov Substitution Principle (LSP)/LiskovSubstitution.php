@@ -2,9 +2,8 @@
 
 // TODO refactoriser le code pour respecter le principe LSP de la programmation SOLID
 
-
-class Rectangle 
-{
+class Shape
+{  
     protected $height;
     protected $width; 
     
@@ -27,14 +26,19 @@ class Rectangle
     {
         return $this->height;
     }
-    
     public function calculateArea()
     {
-        return $this->height * $this->width;
+        return $this->width * $this->height;
     }
 }
 
-class Square extends Rectangle {
+class Rectangle extends Shape
+{
+   
+
+}
+
+class Square extends Shape {
     
 	public function setWidth($width) 
 	{
@@ -46,7 +50,7 @@ class Square extends Rectangle {
 	{
 		$this->width = $height;
 		$this->height = $height;
-	}
+    }
 }
 
 class GraphicEditor
