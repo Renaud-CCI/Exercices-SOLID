@@ -6,7 +6,7 @@ abstract class Vehicle
 {
     public function run(){}
 
-    public function fuel (){}
+    public function turnOn(){}
 }
 
 class Motorcycle extends Vehicle
