@@ -3,15 +3,30 @@
 namespace ISPViolation;
 
 
-interface IWorker
+interface IWorkable
 {
     public function work();
+}
 
+interface IFeedable
+{
     public function eat();
 }
 
+class SuperWorker implements IWorkable, IFeedable
+{
+    public function work()
+    {
+        // working much more
+    }
 
-class Worker implements IWorker
+    public function eat()
+    {
+        // eating in launch break
+    }
+}
+
+class Worker implements IWorkable, IFeedable
 {
     public function work()
     {
@@ -25,16 +40,11 @@ class Worker implements IWorker
 }
 
 
-class Robot implements IWorker
+class Robot implements IWorkable
 {
 
     public function work()
     {
         // working 24 hours per day
-    }
-
-    public function eat()
-    {
-        // doesn't need this method
     }
 }
