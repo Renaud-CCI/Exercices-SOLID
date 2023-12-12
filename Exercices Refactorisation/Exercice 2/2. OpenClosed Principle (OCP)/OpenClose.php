@@ -5,48 +5,41 @@ namespace OCPViolation;
 class GasStation
 {
 
-    public function putGasInVehicle(Vehicle $vehicle)
+    public function putGasInVehicle(VehicleInterface $vehicle)
     {
-        if ($vehicle->getType() == 1)
-            $this->putGasInCar($vehicle);
-        elseif ($vehicle->getType() == 2)
-            $this->putGasInMotorcycle($vehicle);
-    }
-
-    public function putGasInCar(Car $car)
-    {
-        $car->setTank(50);
-    }
-
-    public function putGasInMotorcycle(Motorcycle $motorcycle)
-    {
-        $motorcycle->setTank(20);
+        $vehicle->putGasIn();
     }
 
 }
 
-class Vehicle
+interface VehicleInterface
 {
-    protected $type;
+    public function setTank($tank);
+    public function putGasIn();
+}
+class Vehicle implements VehicleInterface
+{
     protected $tank;
-
-    public function getType()
-    {
-        return $this->type;
-    }
 
     public function setTank($tank)
     {
         $this->tank = $tank;
     }
+    public function putGasIn(){}
 }
 
 class Car extends Vehicle
 {
-    protected $type = 1;
+    public function putGasIn()
+    {
+        $this->setTank(50);
+    }
 }
 
 class Motorcycle extends Vehicle
 {
-    protected $type = 2;
+    public function putGasIn()
+    {
+        $this->setTank(20);
+    }
 }
